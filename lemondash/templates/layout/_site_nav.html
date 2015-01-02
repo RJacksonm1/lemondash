@@ -1,11 +1,10 @@
-{% block site_nav %}
-    <div class="container" id="site_nav">
-        <nav class="navbar navbar-default">
-            <ul class="nav navbar-nav">
-                <li class="{{ "active" if request.endpoint == 'index' }}"><a href="{{ url_for('index') }}">Home</a></li>
-                <li class="{{ "active" if request.endpoint == 'hardlight.index' }}"><a
-                        href="{{ url_for('hardlight.index') }}">Hard Light Bridges</a></li>
-            </ul>
-        </nav>
-    </div>
-{% endblock %}
+<div class="container" id="site_nav">
+    <nav class="navbar navbar-default">
+        <ul class="nav navbar-nav">
+            <li class="{{ "active" if request.endpoint == 'index' }}"><a href="{{ url_for('index') }}">Home</a></li>
+            <li class="{{ "active" if request.endpoint == 'hardlight.index' }}"><a
+                    href="{{ url_for('hardlight.index') }}">Lights</a></li>
+        </ul>
+    </nav>
+    <hr/>
+</div>

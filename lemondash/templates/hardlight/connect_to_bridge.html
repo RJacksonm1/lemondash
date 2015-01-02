@@ -1,0 +1,7 @@
+{% extends "layout/standard.html" %}
+
+{% block content %}
+    <h2>Connect to Hue bridge</h2>
+    <p>To register this application with your Phillips Hue Bridge, please click the button on top of your Hue bridge and click "Continue" below within 30 seconds.</p>
+    <a class="btn btn-primary" href="{{ url_for('hardlight.index') }}">Continue</a>
+{% endblock %}

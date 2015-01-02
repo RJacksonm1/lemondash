@@ -1,84 +1,108 @@
-{% extends "layout/standard.html" %}
+{% extends "hardlight/layout.html" %}
 
 {% block content %}
-    <h2>Lights</h2>
+    {{ super() }}
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>&nbsp;</th>
-            <th>ID</th>
-            <th>Name</th>
-            <th>On</th>
-            <th>Brightness</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for light in lights %}
-            <tr>
-                <td style="background-color:#{{ light.xy|xy_to_hex }}">&nbsp;</td>
-                <td>{{ light.light_id }}</td>
-                <td><a href="{{ url_for('hardlight.light', _id=light.light_id) }}">{{ light.name }}</a></td>
-                <td>{{ light.on }}</td>
-                <td>{{ ((light.brightness / 255) * 100)|round|int }}&percnt;</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">No lights connected</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+        <h2>Lights</h2>
 
-    <h2>Groups</h2>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Lights</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for group in groups %}
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <td>{{ group.group_id }}</td>
-                <td><a href="{{ url_for('hardlight.group', _id=group.group_id) }}">{{ group.name }}</a></td>
-                <td>
-                    <ul>
-                        {% for light in group.lights %}
-                            <li>{{ light.name }}</li>
-                        {% endfor %}
-                    </ul>
-                </td>
+                <th>ID</th>
+                <th>On</th>
+                <th>Colour</th>
+                <th>Name</th>
+                <th>Brightness</th>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">No groups set up</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for light in lights %}
+                <tr>
+                    <td>{{ light.light_id }}</td>
+                    <td>
+                        <input type="checkbox"
+                               class="light_toggle"
+                               name="light[{{ light.light_id }}][on]"
+                               data-lightid="{{ light.light_id }}"
+                                {{ 'checked="checked"' if light.on else '' }}/>
+                    </td>
+                    <td>
+                    <span class="label"
+                          style="background-color:#{{ light.xy|xy_to_hex }};color:#{{ light.xy|xy_to_hex|invert_colour }}">
+                        {{ light.xy|xy_to_hex }}
+                    </span>
+                    </td>
+                    <td>{{ light.name }}</td>
+                    <td>{{ ((light.brightness / 255) * 100)|round|int }}&percnt;</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="12">No lights connected</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <h2>Schedules</h2>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Lights</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for schedule in schedules %}
+        <h2>Groups</h2>
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <td>{{ schedule|pprint }}</td>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Lights</th>
             </tr>
-        {% else %}
+            </thead>
+            <tbody>
+            {% for group in groups %}
+                <tr>
+                    <td>{{ group.group_id }}</td>
+                    <td><a href="{{ url_for('hardlight.group', _id=group.group_id) }}">{{ group.name }}</a></td>
+                    <td>
+                        <ul>
+                            {% for light in group.lights %}
+                                <li>{{ light.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">No groups set up</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Schedules</h2>
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <td colspan="3">No schedules set up</td>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Lights</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for schedule in schedules %}
+                <tr>
+                    <td>{{ schedule|pprint }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">No schedules set up</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        var LIGHT_UPDATE_URL = '{{ url_for('hardlight.light', _id=1234) }}',
+            LIGHT_UPDATE_PLACEHOLDER_ID = 1234;
+    </script>
+    <script src="{{ url_for('static', filename='js/hardlight.js') }}"></script>
 {% endblock %}
