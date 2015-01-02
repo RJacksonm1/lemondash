@@ -27,3 +27,25 @@ body {
 #header img.lemondash-logo:hover {
     background-color: #eee;
 }
+
+
+#site_nav .navbar {
+    min-height: 0;
+}
+
+#site_nav nav {
+    border: 0;
+    background-color: transparent;
+}
+
+#site_nav nav li a {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#site_nav nav li.active a {
+    border: 1px solid #eee;
+    box-shadow: 0 3px 5px #e9e9e9 inset;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}

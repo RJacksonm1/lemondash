@@ -27,7 +27,8 @@ app.config['VERSION'] = current_version()
 import views
 
 # Load blueprints
-# TODO
+from .hardlight import hardlight
+app.register_blueprint(hardlight)
 
 if __name__ == '__main__':
     app.run()

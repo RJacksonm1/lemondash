@@ -1,0 +1,84 @@
+{% extends "layout/standard.html" %}
+
+{% block content %}
+    <h2>Lights</h2>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>On</th>
+            <th>Brightness</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for light in lights %}
+            <tr>
+                <td style="background-color:#{{ light.xy|xy_to_hex }}">&nbsp;</td>
+                <td>{{ light.light_id }}</td>
+                <td><a href="{{ url_for('hardlight.light', _id=light.light_id) }}">{{ light.name }}</a></td>
+                <td>{{ light.on }}</td>
+                <td>{{ ((light.brightness / 255) * 100)|round|int }}&percnt;</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">No lights connected</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Groups</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Lights</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for group in groups %}
+            <tr>
+                <td>{{ group.group_id }}</td>
+                <td><a href="{{ url_for('hardlight.group', _id=group.group_id) }}">{{ group.name }}</a></td>
+                <td>
+                    <ul>
+                        {% for light in group.lights %}
+                            <li>{{ light.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">No groups set up</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Schedules</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Lights</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for schedule in schedules %}
+            <tr>
+                <td>{{ schedule|pprint }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">No schedules set up</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
