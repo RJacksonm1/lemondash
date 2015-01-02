@@ -1,0 +1,17 @@
+{
+  "name": "lemondash",
+  "version": "0.0.0",
+  "authors": [
+    "Rob Jackson <rob@rjackson.me>"
+  ],
+  "main": "manage.py",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

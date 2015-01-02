@@ -1,0 +1,6 @@
+*.pyc
+.idea/*
+mysql-connector*
+lemondash/static/bower/*
+lemondash/static/css/*.css
+instance/config.py
