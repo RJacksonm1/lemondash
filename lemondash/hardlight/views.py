@@ -49,6 +49,7 @@ def light(_id):
         _light.on = request.form.get('on') == "true"
 
     return jsonify({
+        'light_id': _light.light_id,
         'on': _light.on,
         'colour': xy_to_hex(_light.xy),
         'inverted_colour': invert_colour(xy_to_hex(_light.xy)),

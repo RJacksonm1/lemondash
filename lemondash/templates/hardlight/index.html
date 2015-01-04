@@ -22,19 +22,21 @@
                     <td>{{ light.light_id }}</td>
                     <td>
                         <input type="checkbox"
+                               id="light_on_{{ light.light_id }}"
                                class="light_toggle"
                                name="light[{{ light.light_id }}][on]"
                                data-lightid="{{ light.light_id }}"
                                 {{ 'checked="checked"' if light.on else '' }}/>
                     </td>
                     <td>
-                    <span class="label"
+                    <span id="light_colour_{{ light.light_id }}"
+                          class="label"
                           style="background-color:#{{ light.xy|xy_to_hex }};color:#{{ light.xy|xy_to_hex|invert_colour }}">
                         {{ light.xy|xy_to_hex }}
                     </span>
                     </td>
-                    <td>{{ light.name }}</td>
-                    <td>{{ ((light.brightness / 255) * 100)|round|int }}&percnt;</td>
+                    <td><span id="light_name_{{ light.light_id }}">{{ light.name }}</span></td>
+                    <td><span id="light_brightness_{{ light.light_id }}">{{ ((light.brightness / 255) * 100)|round|int }}&percnt;</td>
                 </tr>
             {% else %}
                 <tr>
