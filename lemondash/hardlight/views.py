@@ -5,14 +5,11 @@ from functools import wraps
 from flask import render_template, redirect, url_for, request, g, jsonify
 from phue import Bridge, Light, Group, PhueRegistrationException
 
-BRIDGE_IP = '192.168.1.86'  # TODO: How to find the bridge IP dynamically?
-
-
 def requires_bridge(func):
     @wraps(func)
     def decorated_view(*args, **kwargs):
         try:
-            g.bridge = Bridge(BRIDGE_IP)
+            g.bridge = Bridge(app.config.get('BRIDGE_IP'))
             g.bridge.connect()
             return func(*args, **kwargs)
         except PhueRegistrationException:
