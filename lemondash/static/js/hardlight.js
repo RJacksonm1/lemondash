@@ -13,11 +13,29 @@ function HardLightBridge() {
 
             // Set the light's on state to on/off depending on the checkbox value.
             self.setLightState(light_id, {on: checked})
+        },
+        onLightColourChange: function (e) {
+            var $this = $(this),
+                light_id = $this.data('lightid'),
+                colour = $this.val();
+
+            // Set the light's on state to on/off depending on the checkbox value.
+            self.setLightState(light_id, {colour: colour})
+        },
+        onLightBrightnessChange: function (e) {
+            var $this = $(this),
+                light_id = $this.data('lightid'),
+                brightness = $this.val();
+
+            // Set the light's on state to on/off depending on the checkbox value.
+            self.setLightState(light_id, {brightness: brightness})
         }
     };
 
     // Link up event handlers
     $('input.light_toggle').change(this.event_handlers.onLightToggle);
+    $('input.light_colour').change(this.event_handlers.onLightColourChange);
+    $('input.light_brightness_range').change(this.event_handlers.onLightBrightnessChange);
 };
 
 
@@ -57,14 +75,13 @@ HardLightBridge.prototype.setUILightState = function (light_id, state) {
     var $on = $('#light_on_' + light_id),
         $colour = $('#light_colour_' + light_id),
         $name = $('#light_name_' + light_id),
-        $brightness = $('#light_brightness_' + light_id);
+        $brightness = $('#light_brightness_' + light_id),
+        $brightness_range = $('#light_brightness_range_' + light_id);
     $on.prop('checked', state.on);
+    $colour.val("#" + state.colour);
     $name.text(state.name);
-    $brightness.text(state.brightness + "%");
-
-    $colour
-        .attr('style', 'color: #' + state.inverted_colour + "; background-color: #" + state.colour)
-        .text(state.colour);
+    $brightness.text(state.brightness);
+    $brightness_range.val(state.brightness);
 };
 
 $(document).ready(function () {

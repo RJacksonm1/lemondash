@@ -1,9 +1,11 @@
 from . import hardlight
 from .. import app
-from .helpers import xy_to_hex, invert_colour
+from .helpers import xy_to_hex, hex_to_xy
 from functools import wraps
 from flask import render_template, redirect, url_for, request, g, jsonify
 from phue import Bridge, Light, Group, PhueRegistrationException
+import re
+
 
 def requires_bridge(func):
     @wraps(func)
@@ -45,12 +47,17 @@ def light(_id):
     if 'on' in request.form.keys():
         _light.on = request.form.get('on') == "true"
 
+    if 'brightness' in request.form.keys() and request.form.get('brightness').isdigit():
+        _light.brightness = int(round((float(request.form.get('brightness')) / 100.0) * 254.0))
+
+    if 'colour' in request.form.keys() and re.match(r"\#[0-9A-Fa-f]{6}", request.form.get('colour')) is not None:
+        _light.xy = hex_to_xy(request.form.get('colour')[1:])
+
     return jsonify({
         'light_id': _light.light_id,
         'on': _light.on,
         'colour': xy_to_hex(_light.xy),
-        'inverted_colour': invert_colour(xy_to_hex(_light.xy)),
-        'brightness': int(round((_light.brightness / 255.0) * 100.0))
+        'brightness': int(round((_light.brightness / 254.0) * 100.0))
     })
 
 

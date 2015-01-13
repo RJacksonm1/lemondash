@@ -13,7 +13,7 @@
                 <th>On</th>
                 <th>Colour</th>
                 <th>Name</th>
-                <th>Brightness</th>
+                <th colspan="2">Brightness</th>
             </tr>
             </thead>
             <tbody>
@@ -29,14 +29,26 @@
                                 {{ 'checked="checked"' if light.on else '' }}/>
                     </td>
                     <td>
-                    <span id="light_colour_{{ light.light_id }}"
-                          class="label"
-                          style="background-color:#{{ light.xy|xy_to_hex }};color:#{{ light.xy|xy_to_hex|invert_colour }}">
-                        {{ light.xy|xy_to_hex }}
-                    </span>
+                        <input type="color"
+                                id="light_colour_{{ light.light_id }}"
+                                class="light_colour"
+                                name="light[{{ light.light_id }}][colour]"
+                                data-lightid="{{ light.light_id }}"
+                                value="#{{ light.xy|xy_to_hex }}" />
                     </td>
                     <td><span id="light_name_{{ light.light_id }}">{{ light.name }}</span></td>
-                    <td><span id="light_brightness_{{ light.light_id }}">{{ ((light.brightness / 255) * 100)|round|int }}&percnt;</td>
+                    <td><span id="light_brightness_{{ light.light_id }}">{{ ((light.brightness / 254) * 100)|round|int }}</span>&percnt;</td>
+                    <td>
+                        <input type="range"
+                               id="light_brightness_range_{{ light.light_id }}"
+                               class="light_brightness_range"
+                               name="light[{{ light.light_id }}][brightness]"
+                               data-lightid="{{ light.light_id }}"
+                               value="{{ ((light.brightness / 254) * 100)|round|int }}"
+                               min="0"
+                               max="100"
+                               step="1" />
+                    </td>
                 </tr>
             {% else %}
                 <tr>
@@ -100,11 +112,18 @@
     </div>
 {% endblock %}
 
+{% block styles %}
+    {{ super() }}
+
+    <script src="{{ url_for('static', filename='bower/spectrum/spectrum.css') }}"></script>
+{% endblock %}
+
 {% block scripts %}
     {{ super() }}
+    <script src="{{ url_for('static', filename='bower/spectrum/spectrum.js') }}"></script>
     <script>
-        var LIGHT_UPDATE_URL = '{{ url_for('hardlight.light', _id=1234) }}',
-            LIGHT_UPDATE_PLACEHOLDER_ID = 1234;
+    var LIGHT_UPDATE_URL = '{{ url_for('hardlight.light', _id=441189998819991197253) }}',
+    LIGHT_UPDATE_PLACEHOLDER_ID = '441189998819991197253';
     </script>
     <script src="{{ url_for('static', filename='js/hardlight.js') }}"></script>
 {% endblock %}

@@ -10,15 +10,11 @@ def xy_to_hex(xy):
     c = Converter()
     return c.CIE1931ToHex(*xy)
 
-def invert_colour(hex_string):
-    ch = ColorHelper()
 
-    # Turn hex into REGEBE so we can mathemagic it
-    rgb = ch.hexToRGB(hex_string)
-
-    # Invert the colours
-    for i in xrange(0, len(rgb)):
-        rgb[i] = fabs(rgb[i] - 255)
-
-    # Turn back into hex and return
-    return ch.rgbToHex(*rgb)
+def hex_to_xy(hex):
+    """ Converts RGX hex colour into CIE 1931 coordinates.
+    :param hex: Hex colour string
+    :return: Tuple of X, Y coordinates
+    """
+    c = Converter()
+    return c.hexToCIE1931(hex)
