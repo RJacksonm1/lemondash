@@ -34,7 +34,7 @@
                                 class="light_colour"
                                 name="light[{{ light.light_id }}][colour]"
                                 data-lightid="{{ light.light_id }}"
-                                value="#{{ light.xy|xy_to_hex }}" />
+                                value="{{ light|hue_light_to_rgb }}" />
                     </td>
                     <td><span id="light_name_{{ light.light_id }}">{{ light.name }}</span></td>
                     <td><span id="light_brightness_{{ light.light_id }}">{{ ((light.brightness / 254) * 100)|round|int }}</span>&percnt;</td>

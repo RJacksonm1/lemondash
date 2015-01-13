@@ -1,10 +1,11 @@
 from . import hardlight
 from .. import app
-from .helpers import xy_to_hex, hex_to_xy
+from .helpers import hue_light_to_rgb, HUE_MAX_HUE, HUE_MAX_SAT, HUE_MAX_BRI
 from functools import wraps
 from flask import render_template, redirect, url_for, request, g, jsonify
 from phue import Bridge, Light, Group, PhueRegistrationException
 import re
+from colour import Color
 
 
 def requires_bridge(func):
@@ -51,13 +52,15 @@ def light(_id):
         _light.brightness = int(round((float(request.form.get('brightness')) / 100.0) * 254.0))
 
     if 'colour' in request.form.keys() and re.match(r"\#[0-9A-Fa-f]{6}", request.form.get('colour')) is not None:
-        _light.xy = hex_to_xy(request.form.get('colour')[1:])
+        color = Color(request.form.get('colour'))
+        _light.hue = int(color.get_hue() * HUE_MAX_HUE)  # TODO: Fucking phue library and it's weird ass values. YOU'RE A LIBRARY, HANDLE THIS SHIT FOR ME
+        _light.saturation = int(color.get_saturation() * HUE_MAX_SAT)  # TODO: Fucking phue library and it's weird ass values. YOU'RE A LIBRARY, HANDLE THIS SHIT FOR ME
 
     return jsonify({
         'light_id': _light.light_id,
         'on': _light.on,
-        'colour': xy_to_hex(_light.xy),
-        'brightness': int(round((_light.brightness / 254.0) * 100.0))
+        'colour': hue_light_to_rgb(_light),
+        'brightness': int(round((_light.brightness / HUE_MAX_BRI) * 100.0))
     })
 
 

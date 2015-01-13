@@ -7,5 +7,5 @@ hardlight = Blueprint("hardlight", __name__, url_prefix="/hardlight")
 import views
 
 # Import filters
-from helpers import xy_to_hex
-hardlight.add_app_template_filter(xy_to_hex)
+from helpers import hue_light_to_rgb
+hardlight.add_app_template_filter(hue_light_to_rgb)

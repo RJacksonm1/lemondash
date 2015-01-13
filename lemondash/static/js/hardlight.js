@@ -78,7 +78,7 @@ HardLightBridge.prototype.setUILightState = function (light_id, state) {
         $brightness = $('#light_brightness_' + light_id),
         $brightness_range = $('#light_brightness_range_' + light_id);
     $on.prop('checked', state.on);
-    $colour.val("#" + state.colour);
+    $colour.val(state.colour);
     $name.text(state.name);
     $brightness.text(state.brightness);
     $brightness_range.val(state.brightness);

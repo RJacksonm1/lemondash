@@ -1,20 +1,14 @@
-from rgb_cie import Converter, ColorHelper
-from math import fabs
+from colour import Color
+
+HUE_MAX_HUE = 65535.0
+HUE_MAX_SAT = 254.0
+HUE_MAX_BRI = 254.0
 
 
-def xy_to_hex(xy):
-    """ Converts CIE 1931 coordinates into an approximate RGB hex representation.
-    :param xy: Array or tuple of CIE1931 X and Y coordinates.
-    :return: A hexadecimal string.
-    """
-    c = Converter()
-    return c.CIE1931ToHex(*xy)
+def hue_light_to_rgb(light):
+    color = Color()
+    color.set_hue(light.hue / HUE_MAX_HUE)
+    color.set_saturation(light.saturation / HUE_MAX_SAT)
+    color.set_luminance(0.5)
 
-
-def hex_to_xy(hex):
-    """ Converts RGX hex colour into CIE 1931 coordinates.
-    :param hex: Hex colour string
-    :return: Tuple of X, Y coordinates
-    """
-    c = Converter()
-    return c.hexToCIE1931(hex)
+    return color.get_hex_l()
